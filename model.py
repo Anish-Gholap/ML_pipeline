@@ -12,6 +12,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import randint
 from data_preparation import prepare_data
+from config import settings
+from loguru import logger
 
 def build_model():
     '''
@@ -23,6 +25,7 @@ def build_model():
     4. Train the model
     5. Save the model
     '''
+    logger.info("Building Model")
 
     # 1. Load the splits
     X_train, y_train, X_test, y_test = prepare_data()
@@ -79,6 +82,8 @@ class ClusterSimilarity(BaseEstimator, TransformerMixin):
             range(self.n_clusters)]
 
 def make_preprocessing_pipeline():
+    logger.info('Preparing data processing pipeline')
+
     log_pipeline = make_pipeline(
         SimpleImputer(strategy="median"),
         FunctionTransformer(np.log, feature_names_out="one-to-one"),
@@ -108,6 +113,7 @@ def make_preprocessing_pipeline():
     return preprocessing
 
 def train_model(X_train, y_train, preprocessing):
+    logger.info("Training Model")
     full_pipeline = Pipeline([
         ("preprocessing", preprocessing),
         ('random_forest', RandomForestRegressor(random_state=42))
@@ -116,6 +122,8 @@ def train_model(X_train, y_train, preprocessing):
         'preprocessing__geo__n_clusters': randint(low=3, high=50),
         'random_forest__max_features': randint(low=2, high=20)
     }
+
+    logger.debug(f"params_distribs: {params_distribs}")
 
     random_search = RandomizedSearchCV(
         full_pipeline, params_distribs, n_iter=1, cv=3, scoring='neg_root_mean_squared_error', random_state=42
@@ -130,11 +138,9 @@ def train_model(X_train, y_train, preprocessing):
 def evaluate_model(X_test, y_test, model):
     preds = model.predict(X_test)
     mse = mean_squared_error(y_test, preds)
+    logger.info(f"Evaluating Model; RMSE: {np.sqrt(mse)} ")
     print(f'RMSE: {np.sqrt(mse)}')
 
 def save_model(model):
-    joblib.dump(model, "models/housing_model.pkl")
-
-
-# Test
-build_model()
+    logger.info(f"Saving model to {settings.model_path/settings.model_name}")
+    joblib.dump(model, f'{settings.model_path/settings.model_name}.pkl')

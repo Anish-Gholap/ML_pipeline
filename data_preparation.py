@@ -8,6 +8,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
+from loguru import logger
 
 
 def prepare_data():
@@ -17,6 +18,7 @@ def prepare_data():
     3. Preprocess splits
     4. Return splits
     '''
+    logger.info("Preparing dataset splits")
 
     df = load_housing_data()
 
