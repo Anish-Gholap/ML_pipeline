@@ -3,8 +3,9 @@ from pydantic import DirectoryPath
 from loguru import logger
 from sqlalchemy import create_engine
 
+
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8')
+    model_config = SettingsConfigDict(env_file='src/config/.env', env_file_encoding='utf-8')
 
     model_path: DirectoryPath
     model_name: str
@@ -12,9 +13,11 @@ class Settings(BaseSettings):
     db_conn_string: str
     housing_tablename: str
 
+
 # Variable containing all our paths
 settings = Settings()
+print("✔️ loaded settings:", settings.dict())
 
-logger.add("app.log", rotation="1 day", retention="2 days", compression="zip", level=settings.log_level)
+logger.add("logs/app.log", rotation="1 day", retention="2 days", compression="zip", level=settings.log_level)
 
 engine = create_engine(settings.db_conn_string)

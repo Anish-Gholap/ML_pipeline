@@ -11,9 +11,10 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import randint
-from data_preparation import prepare_data
-from config import settings
 from loguru import logger
+
+from model.pipeline.data_preparation import prepare_data
+from config.config import settings
 
 def build_model():
     '''

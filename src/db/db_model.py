@@ -1,6 +1,6 @@
 from sqlalchemy import REAL, VARCHAR
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from config import settings
+from config.config import settings
 
 # Base class for all the tables in our database
 class Base(DeclarativeBase):

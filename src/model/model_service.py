@@ -1,9 +1,9 @@
 import joblib
-import pandas as pd
 from pathlib import Path
-from model import build_model, column_ratio, ratio_pipeline, make_preprocessing_pipeline, ClusterSimilarity, ratio_name
-from config import settings
 from loguru import logger
+
+from model.pipeline.model import build_model, column_ratio, ratio_pipeline, make_preprocessing_pipeline, ClusterSimilarity, ratio_name
+from config.config import settings
 
 class ModelService:
     def __init__(self):

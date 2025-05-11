@@ -1,12 +1,10 @@
 import numpy as np
 import pandas as pd
-import urllib.request
-import tarfile
-from pathlib import Path
-from config import settings, engine
 from loguru import logger
 from sqlalchemy import select
-from db_model import Housing
+
+from config.config import settings, engine
+from db.db_model import Housing
 
 # def load_housing_data():
 #     logger.info(f"Checking for tarball file at {settings.dataset_path/settings.tarball_name}")
