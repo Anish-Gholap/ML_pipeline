@@ -18,6 +18,6 @@ class Settings(BaseSettings):
 settings = Settings()
 print("✔️ loaded settings:", settings.dict())
 
-logger.add("logs/app.log", rotation="1 day", retention="2 days", compression="zip", level=settings.log_level)
+logger.add("src/logs/app.log", rotation="1 day", retention="2 days", compression="zip", level=settings.log_level)
 
 engine = create_engine(settings.db_conn_string)
